@@ -86,11 +86,11 @@ O Terraform provisionou uma instância EC2 na AWS com as seguintes característi
 - Tipo de instância: `t3.micro`
 - Estado final: `running`
 
-No Console AWS, a instância aparece filtrada pela tag `learn-terraform`.
+No Console AWS, a instância aparece na lista da região `us-west-2`. O print mostra o nome `learn-terraform`, o ID da instância, o estado `Running`, o tipo `t3.micro`, a zona `us-west-2a` e os status checks aprovados.
 
 ![Instância EC2 criada no Console AWS](docs/images/10-console-ec2-instance.png)
 
-Ao selecionar a instância no Console, também é possível ver o painel de detalhes com o ID, IP público, estado e outras informações do recurso criado.
+Ao selecionar a instância no Console, também é possível ver o painel de resumo com o ID, IP público, IP privado, DNS público, estado, tipo, VPC, subnet e ARN do recurso criado.
 
 ![Detalhes da instância EC2 no Console AWS](docs/images/11-console-ec2-details.png)
 
