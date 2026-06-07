@@ -48,3 +48,56 @@ Com os arquivos criados, rodei o `terraform init`. Esse comando inicializa o wor
 Em seguida rodei o `terraform validate`. Esse comando verifica se a configuração está escrita corretamente e se o Terraform consegue interpretar os blocos definidos.
 
 ![Resultado do terraform validate](docs/images/05-terraform-validate.png)
+
+### 6. Autenticação temporária na AWS
+
+Para conseguir executar o provisionamento, usei credenciais temporárias da sessão autenticada no Console AWS. Depois validei a identidade com `aws sts get-caller-identity`.
+
+![Resultado do aws sts get-caller-identity](docs/images/06-aws-sts-get-caller-identity.png)
+
+### 7. Aplicação da infraestrutura
+
+Depois rodei o `terraform apply -auto-approve`. Nesse momento o Terraform comparou o código com o estado atual e criou a instância EC2 definida no arquivo `main.tf`.
+
+O tutorial original usa `t2.micro`, mas a AWS bloqueou esse tipo nesta conta por não estar elegível ao Free Tier. Por isso ajustei para `t3.micro`, que apareceu como opção elegível na região `us-west-2`.
+
+![Resultado do terraform apply](docs/images/07-terraform-apply.png)
+
+### 8. Conferência do state
+
+Com o recurso criado, rodei `terraform state list` para confirmar quais itens passaram a ser controlados pelo Terraform.
+
+![Resultado do terraform state list](docs/images/08-terraform-state-list.png)
+
+Também usei `terraform show` para ver os detalhes completos do estado local da infraestrutura.
+
+![Resultado do terraform show](docs/images/09-terraform-show.png)
+
+## Itens provisionados na nuvem
+
+O Terraform provisionou uma instância EC2 na AWS com as seguintes características:
+
+- Recurso Terraform: `aws_instance.app_server`
+- Nome da instância: `learn-terraform`
+- ID da instância: `i-0786d7403fbeb941c`
+- Região: `us-west-2`
+- Zona de disponibilidade: `us-west-2a`
+- AMI: Ubuntu 24.04 Noble (`ami-096f5760b00bcd95c`)
+- Tipo de instância: `t3.micro`
+- Estado final: `running`
+
+No Console AWS, a instância aparece filtrada pela tag `learn-terraform`.
+
+![Instância EC2 criada no Console AWS](docs/images/10-console-ec2-instance.png)
+
+Ao selecionar a instância no Console, também é possível ver o painel de detalhes com o ID, IP público, estado e outras informações do recurso criado.
+
+![Detalhes da instância EC2 no Console AWS](docs/images/11-console-ec2-details.png)
+
+O mesmo recurso também aparece no estado local do Terraform.
+
+![Resultado do terraform state show](docs/images/12-terraform-state-show-instance.png)
+
+## Observação sobre custos
+
+A instância foi mantida provisionada ao final da atividade, conforme combinado, para permitir conferência posterior no Console AWS.
